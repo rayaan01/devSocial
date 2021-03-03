@@ -4,8 +4,7 @@
   "description": "A Social media app for developers",
   "main": "index.js",
   "scripts": {
-    "start": "node server",
-    "server": "nodemon server"
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
