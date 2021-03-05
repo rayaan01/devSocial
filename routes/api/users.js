@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
+const { route } = require('./profile');
+const auth = require('../../middleware/auth');
 
 // @route POST /api/users
 // @desc  Register user
@@ -49,23 +51,8 @@ router.post('/',
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
             await user.save();
+            res.send({ msg: "User Created"});
             
-            const payload = {
-                user: {
-                    id: user.id
-                }
-            };
-
-            jwt.sign(
-                payload,
-                config.get('JWTsecret'),
-                { expiresIn: 360000 },
-                (err, token) => {
-                    if(err)
-                        throw(err);
-                    res.json({ token });
-                });
-
         } catch(err){
             console.log(err.message);
             res.status(500).send('Server error');
