@@ -259,6 +259,7 @@ img {
   padding: 0.4rem;
   font-size: 1.2rem;
   border: 1px solid #ccc;
+  outline: none;
 }
 
 .form input[type="submit"],
