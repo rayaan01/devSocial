@@ -1,12 +1,14 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
+const config = require("config");
 const auth = require("../../middleware/auth");
 const Profile = require("../../models/profile");
 const Post = require("../../models/posts");
 const User = require("../../models/users");
 const { check, validationResult } = require("express-validator");
 const axios = require("axios");
+const checkObjectId = require("../../middleware/checkObjectId");
 
 // @route GET /api/profile/me
 // @desc Get current user's profile
@@ -114,6 +116,29 @@ router.get("/", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+// @route    GET api/profile/user/:user_id
+// @desc     Get profile by user ID
+// @access   Public
+
+router.get(
+  "/user/:user_id",
+  checkObjectId("user_id"),
+  async ({ params: { user_id } }, res) => {
+    try {
+      const profile = await Profile.findOne({
+        user: user_id,
+      }).populate("user", ["name", "avatar"]);
+
+      if (!profile) return res.status(400).json({ msg: "Profile not found" });
+
+      return res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({ msg: "Server error" });
+    }
+  }
+);
 
 // @route DELETE /api/profile
 // @desc Delete a profile
@@ -305,7 +330,11 @@ router.get("/education", auth, async (req, res) => {
 // @access Public
 
 router.get("/github/:username", async (req, res) => {
-  const url = `https://api.github.com/users/${req.params.username}/repos?per_page=3`;
+  const url = `https://api.github.com/users/${
+    req.params.username
+  }/repos?per_page=5&sort=created:asc&client_id=${config.get(
+    "githubClientId"
+  )}&client_secret=${config.get("githubSecret")}`;
   try {
     const { data } = await axios.get(url);
     res.json(data);

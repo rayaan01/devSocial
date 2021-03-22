@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { Fragment, useRef } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
