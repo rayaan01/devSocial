@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://Cray:rayaan12345@cluster0.mfo3f.mongodb.net/devsocial?retryWrites=true&w=majority",
+  "JWTsecret": "mysecrettoken",
+  "githubClientId": "d9590958bf1b3a7831e1",
+  "githubSecret": "4479c94969e02b39a83554b438f7ba9c98c88a59"
+}

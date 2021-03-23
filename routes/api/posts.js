@@ -80,12 +80,12 @@ router.delete("/:id", auth, async (req, res) => {
       return res.status(401).json({ msg: "Unauthorized to delete post" });
 
     await Post.findByIdAndRemove(req.params.id);
-    res.json({ msg: "Removed post" });
+    res.status(200).json({ msg: "Removed post" });
   } catch (err) {
     if (err.kind === "ObjectId")
       return res.status(400).json({ msg: "Post not found" });
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).json({ msg: "Server Error" });
   }
 });
 
@@ -161,7 +161,7 @@ router.post(
       });
 
       await post.save();
-      res.json(post.comments);
+      res.status(200).json(post.comments);
     } catch (err) {
       if (err.kind === "ObjectId")
         return res.status(400).json({ msg: "Post not found" });

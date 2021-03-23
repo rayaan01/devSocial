@@ -4,11 +4,12 @@ import { connect } from "react-redux";
 import { getPosts } from "../../actions/post";
 import Spinner from "../layouts/spinner";
 import PostItem from "./postItem.js";
+import PostForm from "../../components/posts/postForm";
 
 const Posts = ({ getPosts, post: { posts, loading } }) => {
   useEffect(() => {
     getPosts();
-  }, [getPosts, posts]); // Runs infinite loop of GET_POSTS but updates the UI with likes
+  }, [getPosts]);
 
   return loading ? (
     <Spinner />
@@ -16,8 +17,9 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
     <Fragment>
       <h1 className="large text-primary">Posts</h1>
       <p className="lead">
-        <i className="fa fa-user"></i>Welcome to the Community
+        <i className="fa fa-user"></i> Welcome to the Community
       </p>
+      <PostForm />
       <div className="posts">
         {posts.map((post) => (
           <PostItem key={post._id} post={post} />
